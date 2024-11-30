@@ -62,7 +62,8 @@ class createBook(Resource):
             errors.append("Publication date is required")
 
         # Validación de existencia de categoría
-        category = Category.query.get(args["category_id"])
+        session = db.session
+        category = session.get(Category, args["category_id"])
         if not category:
             errors.append("Invalid category ID")
 

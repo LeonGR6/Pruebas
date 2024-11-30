@@ -34,8 +34,11 @@ class createCategory(Resource):
         db.session.add(category)
         db.session.commit()
 
-        return {"message": "Category created successfully"}, 201
-
+        return {
+            "id": category.id,  # Incluir el id
+            "name": category.name,  # Incluir el nombre
+            "message": "Category created successfully"
+        }, 201
 
 class readCategories(Resource):
     def get(self):

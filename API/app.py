@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
+from flask import send_from_directory
 
 from DB.Extension import db
 from DB.Seeders import runSeeders
@@ -16,12 +17,28 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
+
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQLALCHEMY_DATABASE_URI")
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+
 jwt = JWTManager(app)
 
 
 api = Api(app)
+
+@app.route('/')
+def hello_world():
+    return {'hello': 'world'}
+
+@app.route('/hello')
+def home():
+    return "Hello, World!"
+
+@app.route('/favicon.ico')
+def favicon():
+    print("Favicon requested")
+    return send_from_directory(os.getcwd(), 'favicon.ico', mimetype='image/x-icon')
+
 
 with app.app_context():
     db.init_app(app)
@@ -64,3 +81,4 @@ if __name__ == "__main__":
 
     app.run(debug=True)
     
+
